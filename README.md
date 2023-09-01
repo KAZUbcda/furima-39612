@@ -1,19 +1,17 @@
 # テーブル設計
 
 ## usersテーブル
-| Column                | Type    | Options                   |
-| ------------------    | ------- | ------------------------- |
-| nickname              | string  | null: false               |
-| email                 | string  | null: false, unique: true |
-| encrypted_password    | string  | null: false               |
-| password_confirmation | string  | null: false               |
-| first_name            | string  | null: false               |
-| last_name             | string  | null: false               |
-| first_name_kana       | string  | null: false               |
-| last_name_kana        | string  | null: false               |
-| dob_year_id           | integer | null: false               |
-| dob_month_id          | integer | null: false               |
-| dob_day_id            | integer | null: false               |
+| Column                | Type   | Options                   |
+| --------------------- | ------ | ------------------------- |
+| nickname              | string | null: false               |
+| email                 | string | null: false, unique: true |
+| encrypted_password    | string | null: false               |
+| password_confirmation | string | null: false               |
+| first_name            | string | null: false               |
+| last_name             | string | null: false               |
+| first_name_kana       | string | null: false               |
+| last_name_kana        | string | null: false               |
+| date_of_birth         | date   | null: false               |
 
 ### Association
 - has_many :items
@@ -34,19 +32,18 @@
 
 ### Association
 - belongs_to :user
-- has_one :shipping_addresses
 - has_one :purchase_records
 
 ## shipping_addressesテーブル
 | Column             | Type       | Options                           |
 | ------------------ | ---------- | --------------------------------- |
 | post_code          | string     | null: false                       |
-| pref               | string     | null: false                       |
+| pref               | integer    | null: false                       |
 | municipalities     | string     | null: false                       |
 | street_address     | string     | null: false                       |
 | bldg_name          | string     |                                   |
 | tel_number         | integer    | null: false                       |
-| item               | references | null: false, foreign_key: true |
+| item               | references | null: false, foreign_key: true    |
 
 ### Association
 - belongs_to :items
@@ -55,12 +52,14 @@
 ## purchase_recordsテーブル
 | Column             | Type       | Options                        |
 | ------------------ | -------    | ------------------------------ |
-|user                | references | null: false, foreign_key: true |
-|item                | references | null: false, foreign_key: true |
+| user               | references | null: false, foreign_key: true |
+| item               | references | null: false, foreign_key: true |
+| shipping_addresses | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :users
 - belongs_to :items
+- belongs_to :shipping_addresses
 
 <!-- ## commentsテーブル -->
 <!-- | Column             | Type       | Options                        | -->
