@@ -6,7 +6,6 @@
 | nickname              | string | null: false               |
 | email                 | string | null: false, unique: true |
 | encrypted_password    | string | null: false               |
-| password_confirmation | string | null: false               |
 | first_name            | string | null: false               |
 | last_name             | string | null: false               |
 | first_name_kana       | string | null: false               |
@@ -25,28 +24,28 @@
 | category_id        | integer    | null: false                    |
 | condition_id       | integer    | null: false                    |
 | delivery_charge_id | integer    | null: false                    |
-| shipper_area_id    | integer    | null: false                    |
+| pref_id            | integer    | null: false                    |
 | days_to_ship_id    | integer    | null: false                    |
 | price              | integer    | null: false                    |
 | user               | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
-- has_one :purchase_records
+- has_one :purchase_record
 
 ## shipping_addressesテーブル
-| Column             | Type       | Options                           |
-| ------------------ | ---------- | --------------------------------- |
-| post_code          | string     | null: false                       |
-| pref               | integer    | null: false                       |
-| municipalities     | string     | null: false                       |
-| street_address     | string     | null: false                       |
-| bldg_name          | string     |                                   |
-| tel_number         | integer    | null: false                       |
-| item               | references | null: false, foreign_key: true    |
+| Column          | Type       | Options                        |
+| --------------- | ---------- | ------------------------------ |
+| post_code       | string     | null: false                    |
+| pref_id         | integer    | null: false                    |
+| municipalities  | string     | null: false                    |
+| street_address  | string     | null: false                    |
+| bldg_name       | string     |                                |
+| tel_number      | string     | null: false                    |
+| purchase_record | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :items
+- belongs_to :purchase_record
 
 
 ## purchase_recordsテーブル
@@ -54,12 +53,11 @@
 | ------------------ | -------    | ------------------------------ |
 | user               | references | null: false, foreign_key: true |
 | item               | references | null: false, foreign_key: true |
-| shipping_addresses | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :users
-- belongs_to :items
-- belongs_to :shipping_addresses
+- belongs_to :user
+- belongs_to :item
+- has_one :shipping_address
 
 <!-- ## commentsテーブル -->
 <!-- | Column             | Type       | Options                        | -->
