@@ -1,4 +1,6 @@
 class Item < ApplicationRecord
+  extend ActiveHash::Associations::ActiveRecordExtensions
+
   validates :name,               presence: true
   validates :explanation,        presence: true
   validates :category_id,        presence: true
@@ -9,8 +11,20 @@ class Item < ApplicationRecord
   validates :price,              presence: true
   validates :user,               presence: true
 
+  validates :category_id,        numericality: { other_than: 1, message: "can't be blank" }
+  validates :condition_id,       numericality: { other_than: 1, message: "can't be blank" }
+  validates :delivery_charge_id, numericality: { other_than: 1, message: "can't be blank" }
+  validates :pref_id,            numericality: { other_than: 1, message: "can't be blank" }
+  validates :days_to_ship_id,    numericality: { other_than: 1, message: "can't be blank" }
+
   belongs_to :user
-  has_one :purchase_record
+  belongs_to :category
+  belongs_to :condition
+  belongs_to :delivery_charge
+  belongs_to :pref
+  belongs_to :days_to_ship
+
+  has_one    :purchase_record
 
   has_one_attached :image
 
