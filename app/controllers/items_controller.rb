@@ -6,7 +6,17 @@ class ItemsController < ApplicationController
 
   # newアクション定義
   def new
-    # @item = Item.new
+    @item = Item.new
+  end
+
+  # createアクション定義
+  def create
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to '/'
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   # ここから下privateメソッド
@@ -17,6 +27,10 @@ class ItemsController < ApplicationController
       # ユーザーログインページにリダイレクトする
       redirect_to new_user_session_path
     end
+  end
+
+  def item_params
+    params.require(:item).permit(:name, :explanation, :category_id, :condition_id, :delivery_charge_id, :pref_id, :days_to_ship_id, :price, :image).merge(user_id: current_user.id)
   end
 
 end
