@@ -60,27 +60,27 @@ RSpec.describe Item, type: :model do
       it 'priceが300未満では出品できない' do
         @item.price = '299'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price は300~9,999,999の範囲で指定してください"
+        expect(@item.errors.full_messages).to include 'Price は300~9,999,999の範囲で指定してください'
       end
       it 'priceが10,000,000以上では出品できない' do
         @item.price = '10000000'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price は300~9,999,999の範囲で指定してください"
+        expect(@item.errors.full_messages).to include 'Price は300~9,999,999の範囲で指定してください'
       end
       it 'priceが全角数字では出品できない' do
         @item.price = '３００'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not a number"
+        expect(@item.errors.full_messages).to include 'Price is not a number'
       end
       it 'priceが全角英字では出品できない' do
         @item.price = 'ABCDEF'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not a number"
+        expect(@item.errors.full_messages).to include 'Price is not a number'
       end
       it 'priceが文字では出品できない' do
         @item.price = 'あいう'
         @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not a number"
+        expect(@item.errors.full_messages).to include 'Price is not a number'
       end
       it 'userが紐付いていないと保存できない' do
         @item.user = nil
