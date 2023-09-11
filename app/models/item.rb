@@ -8,10 +8,8 @@ class Item < ApplicationRecord
   validates :delivery_charge_id, presence: true
   validates :pref_id,            presence: true
   validates :days_to_ship_id,    presence: true
-  # with_options presence: true, inclusion: { in: 300..9_999_999, message: 'は300~9,999,999の範囲で指定してください' }, format: { with: /\A[0-9]+$\z/, message: 'は半角数字を使用してください' } do
-  # PRICE_REGEX = /\A[0-9]+\z/
-  # validates_format_of :price,    with: PRICE_REGEX, message: 'は半角数字を使用してください'
-  validates :price,              numericality: true, inclusion: { in: 300..9_999_999, message: 'は300~9,999,999の範囲で指定してください' }
+  validates :price,              presence: true
+  validates :price,              numericality: true, inclusion: { in: 300..9_999_999, message: 'は300~9,999,999の範囲で指定してください' }, allow_blank: true
   validates :user,               presence: true
   validates :image,              presence: true
 
