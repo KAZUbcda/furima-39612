@@ -10,7 +10,7 @@ class Item < ApplicationRecord
   validates :days_to_ship_id,    presence: true
   validates :price,              presence: true
   validates :price,              numericality: true, inclusion: { in: 300..9_999_999, message: 'は300~9,999,999の範囲で指定してください' }, allow_blank: true
-  validates :user,               presence: true
+  validates :price,              numericality: {only_integer: true}
   validates :image,              presence: true
 
   validates :category_id,        numericality: { other_than: 1, message: "can't be blank" }
@@ -26,7 +26,7 @@ class Item < ApplicationRecord
   belongs_to :pref
   belongs_to :days_to_ship
 
-  has_one    :purchase_record
+  # has_one    :purchase_record
 
   has_one_attached :image
 
