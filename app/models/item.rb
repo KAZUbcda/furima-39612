@@ -27,7 +27,7 @@ class Item < ApplicationRecord
   belongs_to :pref
   belongs_to :days_to_ship
 
-  # has_one    :purchase_record
+  has_one    :purchase_record
 
   has_one_attached :image
 

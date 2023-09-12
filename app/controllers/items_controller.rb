@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
   before_action :move_to_sessions_new, only: [:new]
   # indexアクション定義
   def index
-    @items = Item.all
+    @items = Item.all.order('created_at DESC')
   end
 
   # newアクション定義
