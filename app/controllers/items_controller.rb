@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :move_to_sessions_new, only: [:new, :edit]
+  before_action :move_to_sessions_new, only: [:new, :edit, :destroy]
   before_action :correct_user, only: [:edit]
   before_action :set_item, only: [:show, :edit, :update]
 
@@ -35,6 +35,12 @@ class ItemsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    item = Item.find(params[:id])
+    item.destroy
+    redirect_to '/'
   end
 
   # ここから下privateメソッド
