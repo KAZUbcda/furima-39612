@@ -1,5 +1,8 @@
 class ItemsController < ApplicationController
-  before_action :move_to_sessions_new, only: [:new]
+  before_action :move_to_sessions_new, only: [:new, :edit]
+  before_action :correct_user, only: [:edit]
+  before_action :set_item, only: [:show, :edit, :update]
+
   # indexアクション定義
   def index
     @items = Item.all.order('created_at DESC')
@@ -11,7 +14,17 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @item.update(item_params)
+      redirect_to item_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   # createアクション定義
@@ -33,6 +46,20 @@ class ItemsController < ApplicationController
 
     # ユーザーログインページにリダイレクトする
     redirect_to new_user_session_path
+  end
+
+  def correct_user
+    @item = Item.find(params[:id])
+    @user = @item.user
+    # 商品のユーザーIDと現在ログインしているユーザーのIDが
+    # 一致しない時に実行される
+    return if @item.user_id == current_user.id
+
+    redirect_to '/'
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
   end
 
   def item_params
