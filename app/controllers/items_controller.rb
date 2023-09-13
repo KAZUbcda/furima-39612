@@ -1,6 +1,8 @@
 class ItemsController < ApplicationController
   before_action :move_to_sessions_new, only: [:new, :edit]
   before_action :correct_user, only: [:edit]
+  before_action :set_item, only: [:show, :edit, :update]
+
   # indexアクション定義
   def index
     @items = Item.all.order('created_at DESC')
@@ -12,15 +14,12 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
   end
-  
+
   def edit
-    @item = Item.find(params[:id])
   end
 
   def update
-    @item = Item.find(params[:id])
     if @item.update(item_params)
       redirect_to item_path
     else
@@ -43,10 +42,10 @@ class ItemsController < ApplicationController
 
   def move_to_sessions_new
     # ログアウト状態の時に実行される
-    unless user_signed_in?
+    return if user_signed_in?
+
     # ユーザーログインページにリダイレクトする
     redirect_to new_user_session_path
-    end
   end
 
   def correct_user
@@ -54,9 +53,13 @@ class ItemsController < ApplicationController
     @user = @item.user
     # 商品のユーザーIDと現在ログインしているユーザーのIDが
     # 一致しない時に実行される
-    unless @item.user_id == current_user.id
-      redirect_to '/'
-    end
+    return if @item.user_id == current_user.id
+
+    redirect_to '/'
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
   end
 
   def item_params
