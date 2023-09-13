@@ -9,11 +9,11 @@ class Item < ApplicationRecord
   validates :pref_id,            presence: true
   validates :days_to_ship_id,    presence: true
   validates :price,              presence: true
+  validates :image,              presence: true
   validates :price,              numericality: true, inclusion: { in: 300..9_999_999, message: 'は300~9,999,999の範囲で指定してください' },
                                  allow_blank: true
-  validates :price,              numericality: { only_integer: true }
-  validates :image,              presence: true
-
+  validates :price,              numericality: { only_integer: true },allow_blank: true
+  
   validates :category_id,        numericality: { other_than: 1, message: "can't be blank" }
   validates :condition_id,       numericality: { other_than: 1, message: "can't be blank" }
   validates :delivery_charge_id, numericality: { other_than: 1, message: "can't be blank" }
