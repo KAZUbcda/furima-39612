@@ -1,6 +1,6 @@
 class PurchaseRecordShippingAddress
   include ActiveModel::Model
-  attr_accessor :post_code, :pref_id, :municipalities, :street_address, :bldg_name, :tel_number, :user_id, :item_id
+  attr_accessor :post_code, :pref_id, :municipalities, :street_address, :bldg_name, :tel_number, :user_id, :item_id, :token
 
   # ここにバリデーションの処理を書く
   with_options presence: true do
