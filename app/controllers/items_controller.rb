@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :move_to_sessions_new, only: [:new, :edit, :destroy]
   before_action :correct_user,         only: [:edit, :destroy]
   before_action :set_item,             only: [:show, :edit, :update]
+  before_action :check_purchase,       only: [:edit]
 
   # indexアクション定義
   def index
@@ -71,5 +72,13 @@ class ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:name, :explanation, :category_id, :condition_id, :delivery_charge_id, :pref_id,
                                  :days_to_ship_id, :price, :image).merge(user_id: current_user.id)
+  end
+
+  # 売却済み商品の商品情報編集ページに遷移させない処理
+  def check_purchase
+    @user = @item.user
+    if @item.purchase_record.present?
+      redirect_to '/'
+    end
   end
 end

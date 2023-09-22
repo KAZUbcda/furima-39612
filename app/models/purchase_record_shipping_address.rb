@@ -4,14 +4,15 @@ class PurchaseRecordShippingAddress
 
   # ここにバリデーションの処理を書く
   with_options presence: true do
-    validates :post_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
+    validates :token
+    validates :post_code,         format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "は半角数字「3桁ハイフン4桁」の形式で入力してください", allow_blank: true}
     validates :municipalities
     validates :street_address
-    validates :tel_number
+    validates :tel_number,        format: {with: /\A\d{10,11}\z/, message: "は10桁以上11桁以内の半角数字を入力してください", allow_blank: true}
     validates :user_id
     validates :item_id
   end
-  validates :pref_id, numericality: {other_than: 0, message: "can't be blank"}
+  validates :pref_id,   numericality: {other_than: 1, message: "can't be blank"}
 
   def save
     purchase_record = PurchaseRecord.create(user_id: user_id, item_id: item_id )

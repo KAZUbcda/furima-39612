@@ -1,20 +1,22 @@
 class OrdersController < ApplicationController
   before_action :set_item,             only: [:index, :create]
+  before_action :check_purchase,       only: [:index]
+  before_action :move_to_sessions_new, only: [:index]
+  before_action :correct_user,         only: [:index]
 
   def index
-    # @item = Item.find(params[:item_id])
+    gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @purchase_record_shipping_address = PurchaseRecordShippingAddress.new
   end
 
   def create
-    # binding.pry
-    # @item = Item.find(params[:item_id])
     @purchase_record_shipping_address = PurchaseRecordShippingAddress.new(shipping_address_params)
     if @purchase_record_shipping_address.valid?
       pay_item
       @purchase_record_shipping_address.save
       redirect_to root_path
     else
+      gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
       render :index, status: :unprocessable_entity
     end
   end
@@ -26,7 +28,7 @@ class OrdersController < ApplicationController
   end
 
   def pay_item
-    Payjp.api_key = "sk_test_2d5771449a12665767b86f08"  # 自身のPAY.JPテスト秘密鍵を記述しましょう
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # 自身のPAY.JPテスト秘密鍵を記述しましょう
       Payjp::Charge.create(
         amount: @item.price,  # 商品の値段
         card: shipping_address_params[:token],    # カードトークン
@@ -38,4 +40,31 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
   end
 
+  # 売却済み商品の購入ページに遷移させない処理
+  def check_purchase
+    @user = @item.user
+    if @item.purchase_record.present?
+      redirect_to '/'
+    end
+  end
+
+  # ログインしていないユーザーがURLを直接入力してもページ遷移できない処理
+  def move_to_sessions_new
+    # ログアウト状態の時に実行される
+    return if user_signed_in?
+    # ユーザーログインページにリダイレクトする
+    redirect_to new_user_session_path
+  end
+
+  # ログインしているユーザーと商品を出品したユーザーが同一の場合、
+  # 商品購入ページに遷移できない処理
+  def correct_user
+    @item = Item.find(params[:item_id])
+    @user = @item.user
+    # 商品のユーザーIDと現在ログインしているユーザーのIDが
+    # 一致しない時に実行される
+    if @item.user_id == current_user.id
+      redirect_to '/'
+    end
+  end
 end
