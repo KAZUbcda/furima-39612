@@ -26,22 +26,22 @@ RSpec.describe PurchaseRecordShippingAddress, type: :model do
       it 'post_codeは「3桁ハイフン4桁」でなければ保存できない' do
         @purchase_record_shipping_address.post_code = '1234-567'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Post code は半角数字「3桁ハイフン4桁」の形式で入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Post code は半角数字「3桁ハイフン4桁」の形式で入力してください')
       end
       it 'post_codeが全角数字では保存できない' do
         @purchase_record_shipping_address.post_code = '１２３-４５６７'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Post code は半角数字「3桁ハイフン4桁」の形式で入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Post code は半角数字「3桁ハイフン4桁」の形式で入力してください')
       end
       it 'post_codeに文字が含まれていると保存できない' do
         @purchase_record_shipping_address.post_code = '12あ-456A'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Post code は半角数字「3桁ハイフン4桁」の形式で入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Post code は半角数字「3桁ハイフン4桁」の形式で入力してください')
       end
       it 'pref_idがでは保存できない' do
         @purchase_record_shipping_address.pref_id = '1'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Pref can't be blank") 
+        expect(@purchase_record_shipping_address.errors.full_messages).to include("Pref can't be blank")
       end
       it 'municipalitiesが空では保存できない' do
         @purchase_record_shipping_address.municipalities = ''
@@ -51,7 +51,7 @@ RSpec.describe PurchaseRecordShippingAddress, type: :model do
       it 'street_addressが空では保存できない' do
         @purchase_record_shipping_address.street_address = ''
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Street address can't be blank") 
+        expect(@purchase_record_shipping_address.errors.full_messages).to include("Street address can't be blank")
       end
       it 'tel_numberが空では保存できない' do
         @purchase_record_shipping_address.tel_number = ''
@@ -61,27 +61,27 @@ RSpec.describe PurchaseRecordShippingAddress, type: :model do
       it 'tel_numberが10桁未満では保存できない' do
         @purchase_record_shipping_address.tel_number = '090123456'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Tel number は10桁以上11桁以内の半角数字を入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Tel number は10桁以上11桁以内の半角数字を入力してください')
       end
       it 'tel_numberが12桁以上では保存できない' do
         @purchase_record_shipping_address.tel_number = '090123456789'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Tel number は10桁以上11桁以内の半角数字を入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Tel number は10桁以上11桁以内の半角数字を入力してください')
       end
       it 'tel_numberが全角数字では保存できない' do
         @purchase_record_shipping_address.tel_number = '０９０１２３４５６７'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Tel number は10桁以上11桁以内の半角数字を入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Tel number は10桁以上11桁以内の半角数字を入力してください')
       end
       it 'tel_numberに文字が含まれていると保存できない' do
         @purchase_record_shipping_address.tel_number = '09012345あA'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Tel number は10桁以上11桁以内の半角数字を入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Tel number は10桁以上11桁以内の半角数字を入力してください')
       end
       it 'tel_numberに-(ハイフン)が含まれていると保存できない' do
         @purchase_record_shipping_address.tel_number = '090-1234-567'
         @purchase_record_shipping_address.valid?
-        expect(@purchase_record_shipping_address.errors.full_messages).to include("Tel number は10桁以上11桁以内の半角数字を入力してください")
+        expect(@purchase_record_shipping_address.errors.full_messages).to include('Tel number は10桁以上11桁以内の半角数字を入力してください')
       end
       it 'tokenが空だと保存できない' do
         @purchase_record_shipping_address.token = ''
@@ -100,5 +100,4 @@ RSpec.describe PurchaseRecordShippingAddress, type: :model do
       end
     end
   end
-
 end

@@ -76,9 +76,8 @@ class ItemsController < ApplicationController
 
   # 売却済み商品の商品情報編集ページに遷移させない処理
   def check_purchase
-    @user = @item.user
-    if @item.purchase_record.present?
-      redirect_to '/'
-    end
+    return unless @item.purchase_record.present?
+
+    redirect_to '/'
   end
 end
