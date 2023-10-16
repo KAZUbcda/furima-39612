@@ -7,10 +7,13 @@ class OrdersController < ApplicationController
   def index
     gon.public_key = ENV['PAYJP_PUBLIC_KEY']
     @purchase_record_shipping_address = PurchaseRecordShippingAddress.new
+    @shipping_address = ShippingAddress.new
   end
 
   def create
-    @purchase_record_shipping_address = PurchaseRecordShippingAddress.new(shipping_address_params)
+    # @purchase_record_shipping_address = PurchaseRecordShippingAddress.new(shipping_address_params)
+    @purchase_record_shipping_address = PurchaseRecordShippingAddress.new(purchase_record_shipping_address_params)
+    # @shipping_address = ShippingAddress.new(shipping_address_params)
     if @purchase_record_shipping_address.valid?
       pay_item
       @purchase_record_shipping_address.save
@@ -23,7 +26,11 @@ class OrdersController < ApplicationController
 
   private
 
-  def shipping_address_params
+  # def shipping_address_params
+  #   params.require(:purchase_record_shipping_address).permit(:post_code, :pref_id, :municipalities, :street_address, :bldg_name, :tel_number)
+  # end
+
+  def purchase_record_shipping_address_params
     params.require(:purchase_record_shipping_address).permit(:post_code, :pref_id, :municipalities, :street_address, :bldg_name, :tel_number).merge(
       user_id: current_user.id, item_id: params[:item_id], token: params[:token]
     )
